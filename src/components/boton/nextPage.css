@@ -1,0 +1,48 @@
+.headerNextPage {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 80%;
+    margin: 20px auto;
+    color: white;
+    font-family: sans-serif;
+    font-size: 1.3rem;
+}
+
+.headerNextPage button {
+    height: 40px;
+    width: 80px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    opacity: .8;
+    color: #272B33;
+    font-weight: 600;
+    font-size: .95rem;
+}
+
+.none {
+    visibility: hidden;
+}
+
+.red {
+    background-color: #eee;
+}
+
+.blue {
+    background-color: #FF9800;
+}
+
+button:hover {
+    opacity: 1;
+}
+
+@media (max-width: 640px) {
+    .headerNextPage {
+        width: 95%;
+        font-size: 1rem;
+    }
+}

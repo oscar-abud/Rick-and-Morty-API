@@ -1,0 +1,51 @@
+footer {
+    padding: 20px;
+    width: 100%;
+    background-color: #202329;
+    margin-top: 20px;
+    display: grid;
+    place-items: center;
+    gap: 20px;
+}
+
+.containerFooter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.containerFooter a {
+    color: gray;
+}
+
+.containerFooter a strong {
+    color: white;
+    transition: .2s ease-in-out;
+}
+
+.containerFooter a strong:hover {
+    color: #FF9800;
+    opacity: 1;
+}
+
+footer button {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 17px;
+    color: white;
+    background-color: rgb(47, 52, 61);
+    transition: .2s ease-in-out;
+    font-weight: 800;
+}
+
+footer button:hover {
+    background-color: #FF9800;
+    color: #1a1a1a;
+}

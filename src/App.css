@@ -1,0 +1,15 @@
+.body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+::selection {
+    background-color: #202329;
+    color: #FF9800;
+    text-shadow: 1px 1px 1px #000;
+}
+
+::-moz-selection {
+    background-color: #202329;
+    color: #FF9800;
+}
