@@ -15,6 +15,8 @@ const CharacterList = () => {
     const [page, setPage] = useState(1)
     // Filter by status
     const [status, setStatus] = useState('all')
+    // Filter by gender
+    const [gender, setGender] = useState('all')
 
     // useEffect para cargar los personajes al iniciar la pagina
     // y cada vez que cambie la pagina o el status
@@ -27,6 +29,10 @@ const CharacterList = () => {
             // Esto es para filtrar los personajes por status
             if (status !== 'all') {
                 url += `&status=${status}`
+            }
+
+            if (gender !== 'all') {
+                url += `&gender=${gender}`
             }
 
             try {
@@ -46,7 +52,7 @@ const CharacterList = () => {
         fetchData()
         // Inicio al inicio de la ventana al actualizar la pagina
         window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, [page, status])
+    }, [page, status, gender])
 
     return (
         <div className='body'>
@@ -64,26 +70,56 @@ const CharacterList = () => {
                         >
                             Total Characters: {info.count}
                         </h1>
-                        {/*--- Next Page ---*/}
-                        <NextPage page={page} setPage={setPage} info={info} />
-                        <div className="filter">
-                            <p>Filter by status</p>
-                            <select
-                                id="status"
-                                value={status}
-                                onChange={(e) => {
-                                    //Seteamos la pagina a 1 al cambiar el filtro
-                                    // Esto es para que al cambiar el filtro, se muestre la primera pagina
-                                    setPage(1)
-                                    setStatus(e.target.value)
-                                }}
-                            >
-                                <option value="all">All</option>
-                                <option value="Alive">Alive</option>
-                                <option value="Dead">Dead</option>
-                                <option value="unknown">Unknown</option>
-                            </select>
+                        <p>Page: {page}/ <a onClick={() => setPage(info.pages)} >{info.pages}</a> </p>
+                        {/* Content Filter n btn next pages */}
+                        <div className="NextPageAndFilter">
+                            {/*--- Next Page ---*/}
+                            <NextPage page={page} setPage={setPage} info={info} />
+                            {/*Filter by status*/}
+                            <div className="filter">
+                                <div className="filterByStatus">
+                                    <p>Filter by status</p>
+                                    <select
+                                        id="status"
+                                        value={status}
+                                        onChange={(e) => {
+                                            //Seteamos la pagina a 1 al cambiar el filtro
+                                            // Esto es para que al cambiar el filtro, se muestre la primera pagina
+                                            setPage(1)
+                                            setStatus(e.target.value)
+                                        }}
+                                    >
+                                        <option value="all">All</option>
+                                        <option value="Alive">Alive</option>
+                                        <option value="Dead">Dead</option>
+                                        <option value="unknown">Unknown</option>
+
+                                    </select>
+
+                                </div>
+                                <div className="filterByGender">
+                                    <p>Filter by gender</p>
+                                    <select
+                                        id="gender"
+                                        value={gender}
+                                        onChange={(e) => {
+                                            //Seteamos la pagina a 1 al cambiar el filtro
+                                            // Esto es para que al cambiar el filtro, se muestre la primera pagina
+                                            setPage(1)
+                                            setGender(e.target.value)
+                                        }}
+                                    >
+                                        <option value="all">All</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="unknown">Unknown</option>
+
+                                    </select>
+                                </div>
+                            </div>
                         </div>
+
+                        {/*Card of characters*/}
                         <div className="container">
                             {
                                 //Iteracion de los personajes
@@ -92,8 +128,10 @@ const CharacterList = () => {
                                 ))
                             }
                         </div>
-                        {/*--- Next Page ---*/}
-                        <NextPage page={page} setPage={setPage} info={info} />
+                        <div style={{ padding: '0px 20px' }}>
+                            {/*--- Next Page ---*/}
+                            <NextPage page={page} setPage={setPage} info={info} />
+                        </div>
                         <Footer />
                     </div>
             }

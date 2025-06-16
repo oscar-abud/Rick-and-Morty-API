@@ -3,7 +3,7 @@ const NextPage = ({ page, setPage, info }) => {
 
     return (
         <header className="headerNextPage">
-            <p>Page: {page}/ <a onClick={() => setPage(info.pages)} >{info.pages}</a> </p>
+
             <div className="containerBtn">
 
                 <button
