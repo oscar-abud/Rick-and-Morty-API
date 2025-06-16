@@ -146,3 +146,36 @@ a:hover,
 a:focus {
     color: #FF9800;
 }
+
+/*Filter*/
+.filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 5px 0px;
+    gap: 10px;
+    color: white;
+    font-weight: 600;
+}
+
+.filter select {
+    text-align: justify;
+    font-weight: 600;
+    color: #1a1a1a;
+    background-color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+select option {
+    font-weight: 600;
+    color: #1a1a1a;
+    transition: .2s ease-in-out;
+    cursor: pointer;
+    background-color: #272B33;
+    color: #fff;
+}
