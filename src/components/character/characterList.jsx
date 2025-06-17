@@ -17,6 +17,10 @@ const CharacterList = () => {
     const [status, setStatus] = useState('all')
     // Filter by gender
     const [gender, setGender] = useState('all')
+    //Button of search
+    const [search, setSearch] = useState('')
+    // Trigger of search
+    const [triggerSearch, setTriggerSearch] = useState('')
 
     // useEffect para cargar los personajes al iniciar la pagina
     // y cada vez que cambie la pagina o el status
@@ -25,18 +29,15 @@ const CharacterList = () => {
         const fetchData = async () => {
             // let = var dinamico
             let url = `https://rickandmortyapi.com/api/character?page=${page}`
-            // Si el status es diferente de all, se agrega a la url
-            // Esto es para filtrar los personajes por status
-            if (status !== 'all') {
-                url += `&status=${status}`
-            }
 
-            if (gender !== 'all') {
-                url += `&gender=${gender}`
-            }
+            if (status !== 'all') url += `&status=${status}`
+            if (gender !== 'all') url += `&gender=${gender}`
+            if (triggerSearch.trim() !== '') url += `&name=${search}`
 
             try {
                 const response = await fetch(url)
+                if (!response.ok) return
+
                 const data = await response.json()
                 setCharacters(data.results)
                 setInfo(data.info)
@@ -52,7 +53,12 @@ const CharacterList = () => {
         fetchData()
         // Inicio al inicio de la ventana al actualizar la pagina
         window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, [page, status, gender])
+    }, [page, status, gender, triggerSearch])
+
+    const handleClick = () => {
+        setPage(1)
+        setTriggerSearch(search)
+    }
 
     return (
         <div className='body'>
@@ -70,7 +76,21 @@ const CharacterList = () => {
                         >
                             Total Characters: {info.count}
                         </h1>
+                        {/*Pages number*/}
                         <p>Page: {page}/ <a onClick={() => setPage(info.pages)} >{info.pages}</a> </p>
+                        {/*Search Box*/}
+                        <div className="searchBox">
+                            <input
+                                type="text"
+                                placeholder="Search by name"
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter') handleClick()
+                                }}
+                            />
+                            <button onClick={handleClick}>🔍</button>
+                        </div>
                         {/* Content Filter n btn next pages */}
                         <div className="NextPageAndFilter">
                             {/*--- Next Page ---*/}

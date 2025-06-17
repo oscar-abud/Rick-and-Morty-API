@@ -226,3 +226,38 @@ select option {
     font-size: 1.3rem;
     text-align: center;
 }
+
+/*Search box */
+.searchBox {
+    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.searchBox input {
+    width: 100%;
+    max-width: 400px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #1a1a1a;
+}
+
+.searchBox button {
+    padding: 4px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: .7;
+    transition: .2s ease-in-out;
+    font-size: 1rem;
+}
+
+.searchBox button:hover {
+    opacity: 1;
+    background-color: #FF9800;
+    color: #FF9800;
+}
