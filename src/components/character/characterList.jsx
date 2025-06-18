@@ -21,6 +21,8 @@ const CharacterList = () => {
     const [search, setSearch] = useState('')
     // Trigger of search
     const [triggerSearch, setTriggerSearch] = useState('')
+    // Error by search
+    const [problem, setproblem] = useState('')
 
     // useEffect para cargar los personajes al iniciar la pagina
     // y cada vez que cambie la pagina o el status
@@ -36,7 +38,12 @@ const CharacterList = () => {
 
             try {
                 const response = await fetch(url)
-                if (!response.ok) return
+                if (!response.ok) {
+                    setproblem('error')
+                    return
+                } else {
+                    setproblem('')
+                }
 
                 const data = await response.json()
                 setCharacters(data.results)
@@ -77,7 +84,12 @@ const CharacterList = () => {
                             Total Characters: {info.count}
                         </h1>
                         {/*Pages number*/}
-                        <p>Page: {page}/ <a onClick={() => setPage(info.pages)} >{info.pages}</a> </p>
+                        {
+                            problem !== 'error' ?
+                                <p>Page: {page}/ <a onClick={() => setPage(info.pages)} >{info.pages}</a> </p> :
+                                <p style={{ visibility: 'hidden' }}>''</p>
+
+                        }
                         {/*Search Box*/}
                         <div className="searchBox">
                             <input
@@ -91,8 +103,8 @@ const CharacterList = () => {
                             />
                             <button onClick={handleClick}>🔍</button>
                         </div>
-                        {/* Content Filter n btn next pages */}
-                        <div className="NextPageAndFilter">
+                        {/* Content Filter and btn next pages */}
+                        <div className={`NextPageAndFilter ${problem}`}>
                             {/*--- Next Page ---*/}
                             <NextPage page={page} setPage={setPage} info={info} />
                             {/*Filter by status*/}
@@ -140,21 +152,27 @@ const CharacterList = () => {
                         </div>
 
                         {/*Card of characters*/}
-                        <div className="container">
-                            {
-                                //Iteracion de los personajes
-                                characters.map(c => (
-                                    <Character key={c.id} character={c} />
-                                ))
-                            }
-                        </div>
-                        <div style={{ padding: '0px 20px' }}>
+                        {
+                            problem !== 'error' ?
+                                <div className='container'>
+                                    {
+                                        //Iteracion de los personajes
+                                        characters.map(c => (
+                                            <Character key={c.id} character={c} />
+                                        ))
+                                    }
+                                </div> :
+                                <div className="containerError">
+                                    <h2>No results found for character: '{triggerSearch}'</h2>
+                                </div>
+                        }
+                        <div className={problem} style={{ padding: '0px 20px' }} >
                             {/*--- Next Page ---*/}
                             <NextPage page={page} setPage={setPage} info={info} />
                         </div>
-                        <Footer />
                     </div>
             }
+            <Footer />
         </div >
     )
 }
