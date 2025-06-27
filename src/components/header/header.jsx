@@ -1,8 +1,7 @@
 import './header.css'
+import image from '../../assets/rickMorty.png'
 
 const Header = () => {
-
-    const image = '/src/assets/rickMorty.png'
 
     const down = () => {
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })

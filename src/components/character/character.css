@@ -26,7 +26,7 @@ a {
 .tarjeta {
     display: flex;
     width: 600px;
-    height: 220px;
+    min-height: 300px;
     background-color: rgb(60, 62, 68);
     border-radius: .5rem;
     color: white;
@@ -74,26 +74,26 @@ img {
 }
 
 .containerBody {
-    flex: 3 1 0%;
-    position: relative;
+    flex: 2.5 1 0%;
     padding: 0.75rem;
     color: rgb(255, 255, 255);
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: space-around;
+    gap: 4px;
 }
 
 .section:first-child {
     -webkit-box-pack: start;
     justify-content: flex-start;
     gap: 5px;
-}
-
-.section {
-    flex: 1 1 0%;
-    display: flex;
-    flex-direction: column;
-    -webkit-box-pack: center;
-    justify-content: space-evenly;
 }
 
 a h2 {
@@ -166,38 +166,7 @@ a:focus {
     gap: 20px;
 }
 
-.filterByStatus,
-.filterByGender {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 5px 0px;
-    gap: 10px;
-    color: white;
-    font-weight: 600;
-}
 
-.filter select {
-    text-align: justify;
-    font-weight: 600;
-    color: #1a1a1a;
-    background-color: #fff;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-select option {
-    font-weight: 600;
-    color: #1a1a1a;
-    transition: .2s ease-in-out;
-    cursor: pointer;
-    background-color: #272B33;
-    color: #fff;
-}
 
 
 @media (max-width: 640px) {
@@ -234,6 +203,10 @@ select option {
     justify-content: center;
     align-items: center;
     gap: 5px;
+}
+
+.searchBox form {
+    width: 100%;
 }
 
 .searchBox input {
@@ -289,5 +262,6 @@ select option {
 
     .searchBox {
         gap: 0px;
+        padding: 0px 5px;
     }
 }

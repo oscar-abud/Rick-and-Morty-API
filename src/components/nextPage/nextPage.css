@@ -17,8 +17,8 @@
 }
 
 .containerBtn button {
-    height: 40px;
-    width: 80px;
+    min-height: 40px;
+    min-width: 80px;
     padding: 10px;
     border: none;
     border-radius: 10px;

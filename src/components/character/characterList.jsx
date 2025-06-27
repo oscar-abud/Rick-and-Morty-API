@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import React from 'react'
 import Character from './characters.jsx'
 import './character.css'
-import '../boton/nextPage.css'
-import NextPage from '../boton/nextPage.jsx'
+import '../nextPage/nextPage.css'
+import NextPage from '../nextPage/nextPage.jsx'
 import Footer from '../footer/footer.jsx'
 import Header from '../header/header.jsx'
+import Filter from '../filter/filter.jsx'
 
 const CharacterList = () => {
     const [characters, setCharacters] = useState([])
@@ -23,15 +24,17 @@ const CharacterList = () => {
     const [triggerSearch, setTriggerSearch] = useState('')
     // Error by search
     const [problem, setproblem] = useState('')
+    // Keyboard cellphone
+    const searchInputRef = useRef(null)
+
 
     // useEffect para cargar los personajes al iniciar la pagina
     // y cada vez que cambie la pagina o el status
     // Se usa async/await para manejar la peticion a la API
     useEffect(() => {
         const fetchData = async () => {
-            // let = var dinamico
+            setLoading(true)
             let url = `https://rickandmortyapi.com/api/character?page=${page}`
-
             if (status !== 'all') url += `&status=${status}`
             if (gender !== 'all') url += `&gender=${gender}`
             if (triggerSearch.trim() !== '') url += `&name=${search}`
@@ -40,21 +43,39 @@ const CharacterList = () => {
                 const response = await fetch(url)
                 if (!response.ok) {
                     setproblem('error')
+                    setCharacters([])
+                    setInfo({ count: 0, pages: 1 })
+                    setGenderOptions([])
                     return
-                } else {
-                    setproblem('')
                 }
 
                 const data = await response.json()
-                setCharacters(data.results)
+
+                // Obtener todos los personajes
+                let allCharacters = [...data.results]
                 setInfo(data.info)
+
+                if (allCharacters.length === 0) {
+                    setproblem('error')
+                    setCharacters([])
+                    setGenderOptions([])
+                    return
+                }
+
+                setCharacters(allCharacters)
+
+                setproblem('')
             } catch (e) {
                 console.error('Error fetching data:', e)
+                setproblem('error')
                 setCharacters([])
+                setGenderOptions([])
                 setInfo({ count: 0, pages: 1 })
             } finally {
                 setLoading(false)
             }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' })
         }
 
         fetchData()
@@ -65,6 +86,11 @@ const CharacterList = () => {
     const handleClick = () => {
         setPage(1)
         setTriggerSearch(search)
+        setGender('all')
+        setStatus('all')
+        if (searchInputRef.current) {
+            searchInputRef.current.blur()
+        }
     }
 
     return (
@@ -81,7 +107,7 @@ const CharacterList = () => {
                         <h1
                             style={{ color: 'white', textAlign: 'center', fontSize: '1.5rem', margin: '10px 0px' }}
                         >
-                            Total Characters: {info.count}
+                            Total Characters: {problem !== 'error' ? info.count : '0'}
                         </h1>
                         {/*Pages number*/}
                         {
@@ -92,16 +118,25 @@ const CharacterList = () => {
                         }
                         {/*Search Box*/}
                         <div className="searchBox">
-                            <input
-                                type="text"
-                                placeholder="Search by name"
-                                value={search}
-                                onChange={e => setSearch(e.target.value)}
-                                onKeyDown={e => {
-                                    if (e.key === 'Enter') handleClick()
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault()
+                                    handleClick()
+                                    if (searchInputRef.current) {
+                                        searchInputRef.current.blur()
+                                    }
                                 }}
-                            />
-                            <button onClick={handleClick}>🔍</button>
+                                className="searchBox"
+                            >
+                                <input
+                                    ref={searchInputRef}
+                                    type="text"
+                                    placeholder="Search by name"
+                                    value={search}
+                                    onChange={e => setSearch(e.target.value)}
+                                />
+                                <button type="submit">🔍</button>
+                            </form>
                         </div>
                         {/* Content Filter and btn next pages */}
                         <div className={`NextPageAndFilter ${problem}`}>
@@ -109,45 +144,25 @@ const CharacterList = () => {
                             <NextPage page={page} setPage={setPage} info={info} />
                             {/*Filter by status*/}
                             <div className="filter">
-                                <div className="filterByStatus">
-                                    <p>Filter by status</p>
-                                    <select
-                                        id="status"
-                                        value={status}
-                                        onChange={(e) => {
-                                            //Seteamos la pagina a 1 al cambiar el filtro
-                                            // Esto es para que al cambiar el filtro, se muestre la primera pagina
-                                            setPage(1)
-                                            setStatus(e.target.value)
-                                        }}
-                                    >
-                                        <option value="all">All</option>
-                                        <option value="Alive">Alive</option>
-                                        <option value="Dead">Dead</option>
-                                        <option value="unknown">Unknown</option>
+                                <Filter
+                                    title="Status"
+                                    searchQuery={search}
+                                    selectedValue={status}
+                                    onFilterChange={(value) => {
+                                        setStatus(value)
+                                        setPage(1)
+                                    }}
+                                />
+                                <Filter
+                                    title="Gender"
+                                    searchQuery={search}
+                                    selectedValue={gender}
+                                    onFilterChange={(value) => {
+                                        setGender(value)
+                                        setPage(1)
+                                    }}
+                                />
 
-                                    </select>
-
-                                </div>
-                                <div className="filterByGender">
-                                    <p>Filter by gender</p>
-                                    <select
-                                        id="gender"
-                                        value={gender}
-                                        onChange={(e) => {
-                                            //Seteamos la pagina a 1 al cambiar el filtro
-                                            // Esto es para que al cambiar el filtro, se muestre la primera pagina
-                                            setPage(1)
-                                            setGender(e.target.value)
-                                        }}
-                                    >
-                                        <option value="all">All</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="unknown">Unknown</option>
-
-                                    </select>
-                                </div>
                             </div>
                         </div>
 
